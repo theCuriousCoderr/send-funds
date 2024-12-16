@@ -86,10 +86,10 @@ export default function HeroSection() {
                   <p className="text-gray-700">Account Number:</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-medium">7044831729</span>
+                  <span className="font-medium">8071273078</span>
                   <button
                     className="text-purple-600 hover:text-purple-700"
-                    onClick={() => copyToClipboard("7044831729")}
+                    onClick={() => copyToClipboard("8071273078")}
                   >
                     <Copy className="w-5 h-5" />
                   </button>
