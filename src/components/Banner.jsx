@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { X, Copy, CreditCard, User, PiggyBank } from "lucide-react";
 import { toast } from "react-toastify";
-import tukay from "/src/assets/tukay.jpeg"
+import tukay from "/tukay.jpeg"
 
 const Abeg = () => {
   return (
