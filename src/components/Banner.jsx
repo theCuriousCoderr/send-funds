@@ -9,7 +9,7 @@ import tukay from "/src/assets/tukay.jpeg"
 const Abeg = () => {
   return (
     <figure>
-      <img src={tukay} alt=" abeg naa. help me" />
+      <img src={tukay} alt=" Abeg naa. Help me" />
     </figure>
   );
 };
