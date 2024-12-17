@@ -1,15 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
-import { X, Copy, CreditCard,  User, PiggyBank } from "lucide-react";
+import { X, Copy, CreditCard, User, PiggyBank } from "lucide-react";
+import { toast } from "react-toastify";
+
+const Abeg = () => {
+  return (
+    <figure>
+      <img src="/src/assets/tukay.jpeg" alt=" abeg naa. help me" />
+    </figure>
+  );
+};
 
 export default function HeroSection() {
   const [modalVisible, setModalVisible] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [noButtonPosition, setNoButtonPosition] = useState(null);
+  const [moveNoCount, setMoveNoCount] = useState(1);
+  const [acctDetails, setAcctDetails] = useState({
+    acctNo: "7037887923",
+    bankName: "PalmPay",
+    acctName: "Olalekan Oladimeji Segun",
+  });
 
   const moveNoButton = () => {
+    setMoveNoCount(moveNoCount + 1);
     const randomTop = Math.random() * 80 + 10; // Random top position (10% to 90%)
     const randomLeft = Math.random() * 80 + 10; // Random left position (10% to 90%)
     setNoButtonPosition({ top: `${randomTop}%`, left: `${randomLeft}%` });
@@ -17,19 +34,51 @@ export default function HeroSection() {
 
   const handleYesClick = () => {
     setModalVisible(true);
+    setNoButtonPosition(null);
+    setMoveNoCount(1);
   };
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
+    toast("Thank you, my helper")
   };
   const handleCheckClick = () => {
     setModalVisible(false);
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
   };
-  
+  const handleDisable = () => {
+    setDisabled(!disabled);
+
+    if (!disabled) {
+      setTimeout(() => {
+        setDisabled(false);
+      }, 500);
+    }
+  };
   const onClose = () => {
     setModalVisible(false);
- };
+  };
+
+  useEffect(() => {
+    let searchParams = new URLSearchParams(window.location.search);
+    let acctNo = searchParams.get("acctNo");
+    let bankName = searchParams.get("bankName");
+    let acctName = searchParams.get("acctName");
+
+    if (acctNo && bankName && acctName) {
+      setAcctDetails({
+        acctNo: acctNo,
+        bankName: bankName,
+        acctName: acctName,
+      });
+    } else {
+      setAcctDetails({
+        acctNo: "7037887923",
+        bankName: "PalmPay",
+        acctName: "Olalekan Oladimeji Segun",
+      });
+    }
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center bg-gradient-to-b from-black via-purple-900/30 to-black">
@@ -40,25 +89,33 @@ export default function HeroSection() {
           colors={["#a855f7", "#7e22ce"]}
         />
       )}
-      <div className="container mx-auto px-4 py-20">
+      {moveNoCount % 3 === 0 && (
+        <div className="animate-bounce fixed h-screen w-full flex items-end justify-center">
+          <Abeg />
+        </div>
+      )}
+      <div className="container relative mx-auto px-4 py-20">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             Send <span className="text-purple-400">Funds</span>
           </h1>
           <div className="flex gap-2 justify-center items-center">
             <button
-              className={`bg-purple-600 hover:bg-purple-700 text-white px-8 py-2 rounded-lg transition-colors ${
+              className={`bg-purple-600 hover:bg-purple-700 text-white px-8 py-2 rounded-lg transition-colors focus:hidden disabled:bg-purple-600/20 disabled:text-white/20  ${
                 noButtonPosition ? "absolute" : "relative"
               }`}
               style={noButtonPosition || {}}
               onMouseEnter={moveNoButton}
+              // onFocus={handleDisable}
               onClick={moveNoButton}
+              disabled={disabled}
             >
               No
             </button>
             <button
               className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-2 rounded-lg transition-colors"
               onClick={handleYesClick}
+              onFocus={handleDisable}
             >
               Yes
             </button>
@@ -86,12 +143,12 @@ export default function HeroSection() {
                   <p className="text-gray-700">Account Number:</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-medium">8071273078</span>
+                  <span className="font-medium">{acctDetails.acctNo}</span>
                   <button
                     className="text-purple-600 hover:text-purple-700"
-                    onClick={() => copyToClipboard("8071273078")}
+                    onClick={() => copyToClipboard(acctDetails.acctNo)}
                   >
-                    <Copy className="w-5 h-5" />
+                    <Copy className="w-5 h-5" /> 
                   </button>
                 </div>
               </div>
@@ -101,10 +158,10 @@ export default function HeroSection() {
                   <p className="text-gray-700">Bank Name:</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-medium">Moniepoint</span>
+                  <span className="font-medium">{acctDetails.bankName}</span>
                   <button
                     className="text-purple-600 hover:text-purple-700"
-                    onClick={() => copyToClipboard("Moniepoint")}
+                    onClick={() => copyToClipboard(acctDetails.bankName)}
                   >
                     <Copy className="w-5 h-5" />
                   </button>
@@ -113,13 +170,12 @@ export default function HeroSection() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center justify-between gap-2">
                   <User className="w-5 h-5 text-gray-500" />
-                  
-                  <span className="font-medium">Raphael Tomiwa Jesse</span>
+
+                  <span className="font-medium">{acctDetails.acctName}</span>
                   <button
                     className="text-purple-600 hover:text-purple-700"
                     onClick={() => copyToClipboard("Raphael Tomiwa Jesse")}
-                  >
-                  </button>
+                  ></button>
                 </div>
               </div>
             </div>
