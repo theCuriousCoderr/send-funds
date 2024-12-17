@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource-variable/roboto-slab": "^5.1.0",
     "@studio-freight/lenis": "^1.0.42",
+    "@vercel/analytics": "^1.4.1",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
